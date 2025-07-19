@@ -1,0 +1,97 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body { max-width: 300px; margin: 40px auto; }
+        table { width: 100%; }
+        td { font-size: 2em; text-align: center; cursor: pointer; padding: 10px; }
+        input[type="text"] { width: 100%; font-size: 2em; text-align: right; margin-bottom: 10px; }
+        .operator { background: #eee; }
+        .action { background: #f99; }
+    </style>
+</head>
+<body>
+    <input type="text" id="inputbox" value="0" readonly />
+    <table border="1">
+        <tr>
+            <td onclick="clearInput()" class="action">AC</td>
+            <td onclick="backspace()" class="action">⌫</td>
+            <td onclick="digitBtnPressed('.')" class="operator">.</td>
+            <td onclick="digitBtnPressed('/')" class="operator">/</td>
+        </tr>
+        <tr>
+            <td onclick="digitBtnPressed(7)">7</td>
+            <td onclick="digitBtnPressed(8)">8</td>
+            <td onclick="digitBtnPressed(9)">9</td>
+            <td onclick="digitBtnPressed('x')" class="operator">x</td>
+        </tr>
+        <tr>
+            <td onclick="digitBtnPressed(4)">4</td>
+            <td onclick="digitBtnPressed(5)">5</td>
+            <td onclick="digitBtnPressed(6)">6</td>
+            <td onclick="digitBtnPressed('-')" class="operator">-</td>
+        </tr>
+        <tr>
+            <td onclick="digitBtnPressed(1)">1</td>
+            <td onclick="digitBtnPressed(2)">2</td>
+            <td onclick="digitBtnPressed(3)">3</td>
+            <td onclick="digitBtnPressed('+')" class="operator">+</td>
+        </tr>
+        <tr>
+            <td colspan="2" onclick="digitBtnPressed(0)">0</td>
+            <td colspan="2" onclick="calculateResult()" style="text-align:center" class="operator">=</td>
+        </tr>
+    </table>
+    <script>
+        function digitBtnPressed(button) {
+            var input = document.getElementById("inputbox");
+            // Prevent multiple decimals in a number
+            if (button === ".") {
+                let parts = input.value.split(/[\+\-\x\/]/);
+                if (parts[parts.length - 1].includes(".")) return;
+            }
+            // Prevent multiple operators in a row
+            if (["+", "-", "x", "/"].includes(button)) {
+                if (input.value === "0") return;
+                let lastChar = input.value.slice(-1);
+                if (["+", "-", "x", "/"].includes(lastChar)) {
+                    input.value = input.value.slice(0, -1) + button;
+                    return;
+                }
+            }
+            // Remove leading zero
+            if (input.value === "0" && button !== ".") {
+                input.value = "" + button;
+            } else {
+                input.value += button;
+            }
+        }
+        function clearInput() {
+            document.getElementById("inputbox").value = "0";
+        }
+        function backspace() {
+            var input = document.getElementById("inputbox");
+            if (input.value.length > 1) {
+                input.value = input.value.slice(0, -1);
+            } else {
+                input.value = "0";
+            }
+        }
+        function calculateResult() {
+            var input = document.getElementById("inputbox");
+            var expression = input.value.replace(/x/g, '*');
+            // Prevent eval on invalid expressions
+            if (/[\+\-\x\/.]$/.test(input.value)) {
+                input.value = "Error";
+                return;
+            }
+            try {
+                let result = eval(expression);
+                input.value = result;
+            } catch {
+                input.value = "Error";
+            }
+        }
+    </script>
+</body>
+</html>

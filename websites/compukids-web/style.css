@@ -1,0 +1,32 @@
+h1{
+    color:darkred;
+    font-family: sans-serif;
+}
+
+p{
+    color: blue;
+    font-family: fantasy;
+}
+ol{
+    list-style: circle;
+}
+
+ul{
+   list-style: lower-roman;
+}
+
+ul{
+    list-style: image url(images/cursor\ image.jpg);
+}
+
+#menu-bar a{ 
+    font-family: Helvetica, sans-serif;
+    text-decoration: none;
+    background-color: aqua;
+    padding: 5px;
+}
+
+#menu-bar a:hover {
+    background-color: yellow;
+    color: #ffffff;
+}
